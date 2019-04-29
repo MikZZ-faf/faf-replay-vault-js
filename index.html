@@ -1,0 +1,88 @@
+<html>
+<head>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+	<div>
+		<div id="left_p">
+			<div id="search_block">
+				<div id="">
+				Player <input type="text">
+				</div>
+				<div id="">
+				Map name <input type="text">
+				</div>
+				<div id="">
+				Min rating <input type="text">
+				</div>
+				<button id="search">Search
+				</button>
+				
+			</div>
+			
+			<div id="game_result_block">
+				<div>
+					<div>Team
+					</div>
+					<div>Player
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<div id="right_p">
+			<div id="replay_block">
+				<div>
+					<div>Image
+					</div>
+					<div>Players
+					</div>
+					<div>Date
+					</div>
+					<div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="clear:both"></div>
+	<style>
+	#left_p {
+		width: 300px;
+		float: left;
+	}
+	#right_p {
+		width: 98%;
+		margin-left: 306px;
+	}
+	</style>
+	
+	<script>
+	const axios = require('axios');
+	// Optionally the request above could also be done as
+	var api_url = "https://content.faforever.com/data/";
+	function getReplays(){
+		axios.get('game?', {
+			params: {
+			  filter: "(endTime=isnull=false)",
+			  "page[size]":10,
+			  sort: "-startTime"
+			}
+		  })
+		  .then(function (response) {
+			console.log(response);
+		  })
+		  .catch(function (error) {
+			console.log(error);
+		  })
+		  .then(function () {
+			// always executed
+		  }); 
+	}
+	
+	buttonElement.addEventListener('click', function (event) {
+  alert('События вызвано функцией!');
+}); 
+	</script>
+</body>
+</html>
