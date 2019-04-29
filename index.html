@@ -58,16 +58,116 @@
 	</style>
 	
 	<script>
-	const axios = require('axios');
-	// Optionally the request above could also be done as
+	
+	
+	
+	/*
+	Функция посылки запроса к файлу на сервере
+	r_method  - тип запроса: GET или POST
+	r_path    - путь к файлу
+	r_args    - аргументы вида a=1&b=2&c=3...
+	r_handler - функция-обработчик ответа от сервера
+	*/
+	function SendRequest(r_method, r_path, r_args, r_handler)
+	{
+		//Создаём запрос
+		var Request = CreateRequest();
+		
+		//Проверяем существование запроса еще раз
+		if (!Request)
+		{
+			return;
+		}
+		
+		//Назначаем пользовательский обработчик
+		Request.onreadystatechange = function()
+		{
+			//Если обмен данными завершен
+			if (Request.readyState == 4)
+			{
+				//Передаем управление обработчику пользователя
+				r_handler(Request);
+			}
+		}
+		
+		//Проверяем, если требуется сделать GET-запрос
+		if (r_method.toLowerCase() == "get" && r_args.length > 0)
+		r_path += "?" + r_args;
+		
+		//Инициализируем соединение
+		Request.open(r_method, r_path, true);
+		
+		if (r_method.toLowerCase() == "post")
+		{
+			//Если это POST-запрос
+			
+			//Устанавливаем заголовок
+			Request.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
+			//Посылаем запрос
+			Request.send(r_args);
+		}
+		else
+		{
+			//Если это GET-запрос
+			
+			//Посылаем нуль-запрос
+			Request.send(null);
+		}
+	} 
+	
+	/*
+	function getData(url){
+		var xhr = new XMLHttpRequest();
+
+		xhr.open('GET', url, true);
+
+		xhr.send();
+
+		xhr.onreadystatechange = function() {
+		  if (this.readyState != 4) return;
+
+		  // по окончании запроса доступны:
+		  // status, statusText
+		  // responseText, responseXML (при content-type: text/xml)
+
+		  if (this.status != 200) {
+			// обработать ошибку
+			//alert( 'ошибка: ' + (this.status ? this.statusText : 'запрос не удался') );
+			return;
+		  }
+
+		  // получить результат из this.responseText или this.responseXML
+		  console.log(this.responseXML);
+		}
+	}
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function showReplays(){
+	}
+	
 	var api_url = "https://content.faforever.com/data/";
+	var r_args = "filter=(endTime=isnull=false)&page[size]=10&			  sort=-startTime";
+	
 	function getReplays(){
-		axios.get('game?', {
-			params: {
+		//getData(api_url+r_args);
+		//SendRequest('get', api_url, r_args, r_handler);
+		
+		axios.get(api_url+'game?', {
+			/*params: {
 			  filter: "(endTime=isnull=false)",
 			  "page[size]":10,
 			  sort: "-startTime"
-			}
+			}*/
 		  })
 		  .then(function (response) {
 			console.log(response);
@@ -78,11 +178,14 @@
 		  .then(function () {
 			// always executed
 		  }); 
+		
 	}
 	
+	const buttonElement = document.getElementById('search');
 	buttonElement.addEventListener('click', function (event) {
-  alert('События вызвано функцией!');
-}); 
+	  getReplays();
+	}); 
+	
 	</script>
 </body>
 </html>
